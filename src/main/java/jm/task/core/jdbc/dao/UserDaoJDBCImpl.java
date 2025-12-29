@@ -1,16 +1,18 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 
-import javax.swing.plaf.nimbus.State;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private static Connection connection;
+    private Connection connection;
 
     public UserDaoJDBCImpl() {
+        this.connection = Util.open();
     }
 
     public void createUsersTable() {
@@ -28,8 +30,6 @@ public class UserDaoJDBCImpl implements UserDao {
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
-
-
     }
 
     public void dropUsersTable() {
@@ -55,11 +55,10 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2,lastName);
             preparedStatement.setByte(3,age);
             preparedStatement.executeUpdate();
-            System.out.println("User с именем - " + user.getName() + " добавлен в базу данных");
+            System.out.println("User с именем - " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void removeUserById(long id) {
